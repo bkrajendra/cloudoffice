@@ -1,18 +1,8 @@
-# ==============================================================================
-# HolyClaude — Pre-configured Docker Environment for Claude Code CLI + CloudCLI
-# https://github.com/coderluii/holyclaude
-#
-# Build variants:
-#   docker build -t holyclaude .                        # full (default)
-#   docker build --build-arg VARIANT=slim -t holyclaude:slim .
-# ==============================================================================
-
 FROM node:22-bookworm-slim
 
-LABEL org.opencontainers.image.source=https://github.com/CoderLuii/HolyClaude
 
 # ---------- Build args ----------
-ARG S6_OVERLAY_VERSION=3.2.0.2
+ARG S6_OVERLAY_VERSION=3.2.2.0
 ARG TARGETARCH
 ARG VARIANT=full
 
@@ -43,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Build tools
     build-essential pkg-config python3 python3-pip python3-venv \
     # Browser (Playwright/Puppeteer)
-    chromium \
+    # chromium \
     # Fonts
     fonts-liberation2 fonts-dejavu-core fonts-noto-core fonts-noto-color-emoji fonts-inter \
     # Locale support
@@ -55,7 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # SSH client (NOT server)
     openssh-client \
     # Xvfb for headless Chrome
-    xvfb \
+    # xvfb \
     # Image processing
     imagemagick \
     # Sudo
@@ -69,11 +59,11 @@ RUN if [ "$VARIANT" = "full" ]; then \
     && rm -rf /var/lib/apt/lists/*; \
     fi
 
-# ---------- Azure CLI (full only) ----------
-RUN if [ "$VARIANT" = "full" ]; then \
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash \
-    && rm -rf /var/lib/apt/lists/*; \
-    fi
+# # ---------- Azure CLI (full only) ----------
+# RUN if [ "$VARIANT" = "full" ]; then \
+#     curl -sL https://aka.ms/InstallAzureCLIDeb | bash \
+#     && rm -rf /var/lib/apt/lists/*; \
+#     fi
 
 # ---------- GitHub CLI ----------
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
@@ -106,7 +96,6 @@ ENV PATH="/home/claude/.local/bin:${PATH}"
 # ---------- npm global packages (slim — always installed) ----------
 RUN npm i -g \
     typescript tsx \
-    pnpm \
     vite esbuild \
     eslint prettier \
     serve nodemon concurrently \
@@ -151,18 +140,6 @@ RUN npm i -g @google/gemini-cli @openai/codex task-master-ai
 USER claude
 RUN curl -fsSL https://cursor.com/install | bash
 USER root
-
-# ---------- Junie CLI (full only) ----------
-USER claude
-RUN if [ "$VARIANT" = "full" ]; then \
-    curl -fsSL https://junie.jetbrains.com/install.sh | bash; \
-    fi
-USER root
-
-# ---------- OpenCode CLI (full only) ----------
-RUN if [ "$VARIANT" = "full" ]; then \
-    npm i -g opencode-ai; \
-    fi
 
 # ---------- CloudCLI (web UI for Claude Code) ----------
 RUN npm i -g @siteboon/claude-code-ui

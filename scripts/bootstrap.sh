@@ -42,8 +42,8 @@ EOF
 echo "[bootstrap] Created ~/.claude.json"
 
 # ---------- Git configuration ----------
-GIT_USER_NAME="${GIT_USER_NAME:-HolyClaude User}"
-GIT_USER_EMAIL="${GIT_USER_EMAIL:-noreply@holyclaude.local}"
+GIT_USER_NAME="${GIT_USER_NAME:-Rajendra Khope}"
+GIT_USER_EMAIL="${GIT_USER_EMAIL:-bkrajendra@gmail.com}"
 runuser -u "$CLAUDE_USER" -- git config --global safe.directory /workspace
 runuser -u "$CLAUDE_USER" -- git config --global user.name "$GIT_USER_NAME"
 runuser -u "$CLAUDE_USER" -- git config --global user.email "$GIT_USER_EMAIL"
