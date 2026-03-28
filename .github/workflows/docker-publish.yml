@@ -23,7 +23,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        variant: [slim, full]
+        variant: [full]
 
     steps:
       - name: Checkout
