@@ -1,4 +1,4 @@
-name: HolyClaude — Build & Push to Docker Hub + GHCR
+name: Build & Push to Docker Hub + GHCR
 
 on:
   workflow_dispatch:
@@ -11,8 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOCKERHUB_IMAGE: coderluii/holyclaude
-  GHCR_IMAGE: ghcr.io/coderluii/holyclaude
+  DOCKERHUB_IMAGE: bkrajendra/cloudoffice
 
 jobs:
   build-and-push:
@@ -49,12 +48,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GHCR
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Extract metadata
         id: meta
@@ -62,7 +55,6 @@ jobs:
         with:
           images: |
             ${{ env.DOCKERHUB_IMAGE }}
-            ${{ env.GHCR_IMAGE }}
           tags: |
             type=raw,value=latest,enable=${{ matrix.variant == 'full' }}
             type=raw,value=slim,enable=${{ matrix.variant == 'slim' }}
