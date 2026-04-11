@@ -142,8 +142,10 @@ RUN curl -fsSL https://cursor.com/install | bash
 USER root
 
 # ---------- CloudCLI (web UI for Claude Code) ----------
-RUN npm i -g @siteboon/claude-code-ui
+RUN npm i -g @siteboon/claude-code-ui@latest
 RUN touch /usr/local/lib/node_modules/@siteboon/claude-code-ui/.env
+
+RUN npm install -g task-master-ai
 
 # ---------- Patch: preserve WebSocket frame type in plugin proxy (Issue #11) ----------
 RUN CLOUDCLI_INDEX="/usr/local/lib/node_modules/@siteboon/claude-code-ui/server/index.js" && \
